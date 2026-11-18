@@ -1,0 +1,232 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "ملف المستخدم المصادق بحساب جوجل وربطه بالأكاديمية ودوره",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "معرف المستخدم في Firebase Auth" },
+        "email": { "type": "string", "description": "البريد الإلكتروني" },
+        "displayName": { "type": "string", "description": "الاسم المعروض" },
+        "academyId": { "type": "string", "description": "معرف الأكاديمية المرتبطة" },
+        "role": { "type": "string", "enum": ["admin", "teacher", "pending"] },
+        "assignedGroupIds": { "type": "array", "description": "المجموعات المخصصة للمعلم" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "FieldValue.serverTimestamp()" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "FieldValue.serverTimestamp()" }
+      },
+      "required": ["userId", "email", "displayName", "role", "assignedGroupIds", "createdAt", "updatedAt"]
+    },
+    "TeacherInvite": {
+      "title": "TeacherInvite",
+      "description": "كود ورابط دعوة لربط حساب معلم بالأكاديمية وتحديد مجموعته ومادته الدراسية",
+      "type": "object",
+      "properties": {
+        "academyId": { "type": "string" },
+        "academyName": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "teacherEmail": { "type": "string" },
+        "teacherDocId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "groupName": { "type": "string" },
+        "gradeLevel": { "type": "integer" },
+        "allowTeacherGroupChoice": { "type": "boolean" },
+        "availableGroupOptions": { "type": "array" },
+        "availableSubjectNames": { "type": "array" },
+        "assignedGroupIds": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "claimed"] },
+        "claimedByUid": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["academyId", "teacherName", "assignedGroupIds", "status", "createdBy", "createdAt", "updatedAt"]
+    },
+    "AcademyConfig": {
+      "title": "AcademyConfig",
+      "description": "الإعدادات الموحدة لهوية أكاديمية النخبة والعملة والتقويم ومعايير التقييم",
+      "type": "object",
+      "properties": {
+        "ownerUid": { "type": "string" },
+        "academyName": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "currencySymbol": { "type": "string" },
+        "primaryCalendar": { "type": "string", "enum": ["gregorian", "hijri"] },
+        "absenceAlertThreshold": { "type": "integer" },
+        "evaluationCriteria": { "type": "array" },
+        "darkModeDefault": { "type": "boolean" },
+        "pinEnabled": { "type": "boolean" },
+        "pinCode": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerUid", "academyName", "subtitle", "currencySymbol", "primaryCalendar", "absenceAlertThreshold", "evaluationCriteria", "darkModeDefault", "pinEnabled", "createdAt", "updatedAt"]
+    },
+    "AcademyMember": {
+      "title": "AcademyMember",
+      "description": "عضو مفعل داخل الأكاديمية (مدير أو معلم)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "teacher"] },
+        "assignedGroupIds": { "type": "array" },
+        "inviteCode": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "email", "role", "assignedGroupIds", "createdAt", "updatedAt"]
+    },
+    "Teacher": {
+      "title": "Teacher",
+      "description": "سجل المعلم في دليل الأكاديمية",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "email": { "type": "string" },
+        "inviteCode": { "type": "string" },
+        "linkedUid": { "type": "string" },
+        "assignedGroupIds": { "type": "array" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "subject", "assignedGroupIds", "active", "createdAt", "updatedAt"]
+    },
+    "StudyGroup": {
+      "title": "StudyGroup",
+      "description": "مجموعة دراسية ضمن أحد الصفوف الـ 12 مرتبطة بمادة ومعلم",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "gradeLevel": { "type": "integer" },
+        "subjectId": { "type": "string" },
+        "subjectName": { "type": "string" },
+        "subjectColorKey": { "type": "string", "enum": ["navy", "gold", "emerald", "info", "amber", "crimson", "teal", "plum"] },
+        "teacherId": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "teacherUids": { "type": "array" },
+        "scheduleText": { "type": "string" },
+        "maxCapacity": { "type": "integer" },
+        "monthlyFee": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "gradeLevel", "teacherName", "teacherUids", "scheduleText", "maxCapacity", "monthlyFee", "createdAt", "updatedAt"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "سجل الطالب مع دعم الوافدين الجدد والرسوم المقررة والأرشفة بدلاً من الحذف النهائي",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "guardianName": { "type": "string" },
+        "phone": { "type": "string" },
+        "enrollmentDateMillis": { "type": "integer" },
+        "gradeLevel": { "type": "integer" },
+        "groupId": { "type": "string" },
+        "teacherUids": { "type": "array" },
+        "prescribedFee": { "type": "number" },
+        "notes": { "type": "string" },
+        "archived": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "guardianName", "phone", "enrollmentDateMillis", "gradeLevel", "teacherUids", "notes", "archived", "createdAt", "updatedAt"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "سجل حضور الطالب اليومي في مجموعة محددة",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "groupId": { "type": "string" },
+        "teacherUids": { "type": "array" },
+        "dateKey": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "absent", "late", "excused"] },
+        "recordedByUid": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "studentName", "groupId", "teacherUids", "dateKey", "status", "recordedByUid", "notes", "createdAt", "updatedAt"]
+    },
+    "PaymentRecord": {
+      "title": "PaymentRecord",
+      "description": "سجل دفع المصروفات الشهرية وإيصال السداد",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "groupId": { "type": "string" },
+        "monthKey": { "type": "string" },
+        "amountDue": { "type": "number" },
+        "amountPaid": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["cash", "transfer", "wallet", "instapay"] },
+        "receiptNumber": { "type": "string" },
+        "paidAtMillis": { "type": "integer" },
+        "recordedByUid": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "studentName", "monthKey", "amountDue", "amountPaid", "paymentMethod", "receiptNumber", "paidAtMillis", "recordedByUid", "notes", "createdAt", "updatedAt"]
+    },
+    "EvaluationRecord": {
+      "title": "EvaluationRecord",
+      "description": "تقييم أكاديمي متعدد المعايير للطالب",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "groupId": { "type": "string" },
+        "teacherUids": { "type": "array" },
+        "subject": { "type": "string" },
+        "scores": { "type": "object" },
+        "totalScore": { "type": "number" },
+        "maxTotalScore": { "type": "number" },
+        "percentage": { "type": "number" },
+        "gradeLabel": { "type": "string" },
+        "evaluatedDateMillis": { "type": "integer" },
+        "notes": { "type": "string" },
+        "recordedByUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["studentId", "studentName", "teacherUids", "subject", "scores", "totalScore", "maxTotalScore", "percentage", "gradeLabel", "evaluatedDateMillis", "notes", "recordedByUid", "createdAt", "updatedAt"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "مادة دراسية مستقلة ومميزة في الأكاديمية",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "normalizedName": { "type": "string" },
+        "code": { "type": "string" },
+        "colorKey": { "type": "string", "enum": ["navy", "gold", "emerald", "info", "amber", "crimson", "teal", "plum"] },
+        "description": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "normalizedName", "code", "colorKey", "description", "active", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": { "$ref": "#/entities/UserProfile" }, "description": "ملف المستخدم" },
+    "/invites/{inviteCode}": { "schema": { "$ref": "#/entities/TeacherInvite" }, "description": "أكواد دعوة المعلمين" },
+    "/academies/{academyId}": { "schema": { "$ref": "#/entities/AcademyConfig" }, "description": "إعدادات الأكاديمية" },
+    "/academies/{academyId}/members/{memberUid}": { "schema": { "$ref": "#/entities/AcademyMember" }, "description": "أعضاء الأكاديمية" },
+    "/academies/{academyId}/teachers/{teacherId}": { "schema": { "$ref": "#/entities/Teacher" }, "description": "دليل المعلمين" },
+    "/academies/{academyId}/groups/{groupId}": { "schema": { "$ref": "#/entities/StudyGroup" }, "description": "المجموعات الدراسية" },
+    "/academies/{academyId}/students/{studentId}": { "schema": { "$ref": "#/entities/Student" }, "description": "بيانات الطلاب" },
+    "/academies/{academyId}/attendance/{recordId}": { "schema": { "$ref": "#/entities/AttendanceRecord" }, "description": "سجلات الحضور والغياب" },
+    "/academies/{academyId}/payments/{paymentId}": { "schema": { "$ref": "#/entities/PaymentRecord" }, "description": "سجلات المدفوعات" },
+    "/academies/{academyId}/evaluations/{evaluationId}": { "schema": { "$ref": "#/entities/EvaluationRecord" }, "description": "سجلات التقييمات" },
+    "/academies/{academyId}/subjects/{subjectId}": { "schema": { "$ref": "#/entities/Subject" }, "description": "المواد الدراسية المميزة" }
+  }
+}

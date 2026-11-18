@@ -1,0 +1,8 @@
+{
+  "name": "Remix أكاديمية النخبة",
+  "description": "تطبيق أندرويد متكامل لإدارة أكاديمية النخبة التعليمية: الطلاب، المجموعات، الحضور، المدفوعات، التقييمات، والتقارير المطبوعة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
